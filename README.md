@@ -63,7 +63,7 @@ Before training the model, please make sure you can use GPU to accelerate comput
 
         python2 sample.py
         
-## Pretrained Model
+## Trained Model
 On MSVD: https://mega.nz/#!5pRQEaZC!zmCkfjtmqAIEMUgoT0_PFX9Ame-oNAO5SU0brIm_lqI
 
 On MSR-VTT: https://mega.nz/#!Q0RHXYLa!2svrqHyjXaMx59aMho4GujNCnLECHyaoWnkmjHWbwUo
