@@ -68,7 +68,7 @@ On MSVD: https://mega.nz/#!5pRQEaZC!zmCkfjtmqAIEMUgoT0_PFX9Ame-oNAO5SU0brIm_lqI
 
 On MSR-VTT: https://mega.nz/#!Q0RHXYLa!2svrqHyjXaMx59aMho4GujNCnLECHyaoWnkmjHWbwUo
     
-If you use the pretrained model, please make a directory named 'results', and then put the pretrained models into this directory.
+If you use the trained model, please make a directory named 'results', and then put the pretrained models into this directory.
         
 # Results
 ## Quantity
