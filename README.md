@@ -21,7 +21,7 @@ Partial implementation of [Hierarchical Boundary-Aware Neural Encoder for Video 
 - h5py
 - pandas
 - future  # python2 only
-- tensorboard_logger  # for use tensorboard to view training loss
+- tensorboard_logger  # for using tensorboard to view training loss
 
 You can use:
 
@@ -73,16 +73,6 @@ On MSR-VTT: https://mega.nz/#!Q0RHXYLa!2svrqHyjXaMx59aMho4GujNCnLECHyaoWnkmjHWbw
     
 If you use the trained model, please make a directory named 'results', and then put the trained models into this directory.
 
-
-# Training Logs
-## MSVD
-![MSVD](./img/MSVD.png  "MSVD")
-## MSVD with C3D
-![MSVD with C3D](./img/MSVD-C3D.png  "MSVD-C3D")
-## MSR-VTT
-![MSR-VTT](./img/MSR-VTT.png  "MSR-VTT")
-
-**Note**: The raising of loss is because of [schedule sampling](https://arxiv.org/abs/1506.03099).
         
 # Results
 ## Quantity
@@ -93,3 +83,13 @@ The following table shows the performance of this implementation (using ResNet50
 | MSVD                |     79.8 |     65.5 |    55.1 |     44.8 |    31.6 |     69.4 |
 | MSVD (+C3D)         |     79.1 |     65.4 |    54.4 |     43.2 |    30.2 |     61.6 |
 | MSR-VTT             |     78.7 |     63.2 |    49.2 |     36.8 |    26.7 |     41.2 |
+
+## Training Logs
+### MSVD
+![MSVD](./img/MSVD.png  "MSVD")
+### MSVD with C3D
+![MSVD with C3D](./img/MSVD-C3D.png  "MSVD-C3D")
+### MSR-VTT
+![MSR-VTT](./img/MSR-VTT.png  "MSR-VTT")
+
+**Note**: The raising of loss is because of [schedule sampling](https://arxiv.org/abs/1506.03099).
