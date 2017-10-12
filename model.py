@@ -15,7 +15,7 @@ from torch.nn.parameter import Parameter
 from torch.autograd import Variable, Function
 import torchvision.models as models
 
-from args import resnet_checkpoint, vgg_checkpoint
+from args import resnet_checkpoint
 from args import c3d_checkpoint
 
 
@@ -43,17 +43,6 @@ class AppearanceEncoder(nn.Module):
         x = x.view(x.size(0), -1)
 
         return x
-
-    # 使用VGG作为视觉特征提取器
-    # def __init__(self):
-    #     super(VisualEncoder, self).__init__()
-    #     self.vgg = models.vgg16()
-    #     self.vgg.load_state_dict(torch.load(vgg_checkpoint))
-    #     # 把VGG的最后一个fc层（其之前的ReLU层要保留）剔除掉
-    #     self.vgg.classifier = nn.Sequential(*list(self.vgg.classifier.children())[:-1])
-
-    # def forward(self, images):
-    #     return self.vgg(images)
 
 
 class C3D(nn.Module):
@@ -143,8 +132,6 @@ class BinaryGate(Function):
         ctx.thrs = random.uniform(0, 1) if training else 0.5
         output[output > ctx.thrs] = 1
         output[output <= ctx.thrs] = 0
-        # print(input)
-        # print(ctx.thrs)
         return output
 
     @staticmethod
@@ -181,15 +168,15 @@ class BoundaryDetector(nn.Module):
     def __repr__(self):
         return self.__class__.__name__
 
-
+ 
 class Encoder(nn.Module):
     '''
     Hierarchical Boundart-Aware视频编码器
     '''
 
-    def __init__(self, frame_size, projected_size, mid_size, hidden_size, max_frames):
+    def __init__(self, feature_size, projected_size, mid_size, hidden_size, max_frames):
         '''
-        frame_size: 视频帧的特征大小，2048维
+        feature_size: 视频帧的特征大小，2048维
         projected_size: 特征的投影维度
         mid_size: BD单元的中间表达维度
         hidden_size: LSTM的隐藏单元个数（隐层表示的维度）
@@ -197,13 +184,13 @@ class Encoder(nn.Module):
         '''
         super(Encoder, self).__init__()
 
-        self.frame_size = frame_size
+        self.feature_size = feature_size
         self.projected_size = projected_size
         self.hidden_size = hidden_size
         self.max_frames = max_frames
 
         # frame_embed用来把视觉特征降维
-        self.frame_embed = nn.Linear(frame_size, projected_size)
+        self.frame_embed = nn.Linear(feature_size, projected_size)
         self.frame_drop = nn.Dropout(p=0.5)
 
         # lstm1_cell是低层的视频序列编码单元
@@ -231,7 +218,10 @@ class Encoder(nn.Module):
         lstm1_h, lstm1_c = self._init_lstm_state(video_feats)
         lstm2_h, lstm2_c = self._init_lstm_state(video_feats)
 
-        v = video_feats.view(-1, self.frame_size)
+        # 只取表观特征
+        video_feats = video_feats[:, :, :self.feature_size].contiguous()
+
+        v = video_feats.view(-1, self.feature_size)
         v = self.frame_embed(v)
         v = self.frame_drop(v)
         v = v.view(batch_size, -1, self.projected_size)
@@ -249,7 +239,7 @@ class Encoder(nn.Module):
             lstm1_h = lstm1_h * (1 - s)
             lstm1_c = lstm1_c * (1 - s)
 
-        return lstm1_h
+        return lstm2_h
 
 
 class Decoder(nn.Module):
@@ -352,10 +342,10 @@ class Decoder(nn.Module):
 
 
 class BANet(nn.Module):
-    def __init__(self, frame_size, projected_size, mid_size, hidden_size,
+    def __init__(self, feature_size, projected_size, mid_size, hidden_size,
                  max_frames, max_words, vocab):
         super(BANet, self).__init__()
-        self.encoder = Encoder(frame_size, projected_size, mid_size, hidden_size,
+        self.encoder = Encoder(feature_size, projected_size, mid_size, hidden_size,
                                max_frames)
         self.decoder = Decoder(hidden_size, projected_size, hidden_size,
                                max_words, vocab)
