@@ -12,7 +12,7 @@ from model import BANet
 from args import video_root, video_sort_lambda
 from args import vocab_pkl_path, feature_h5_path, feature_h5_feats
 from args import best_banet_pth_path
-from args import frame_size, max_frames, max_words
+from args import feature_size, max_frames, max_words
 from args import projected_size, hidden_size, mid_size
 from args import use_cuda
 from args import visual_dir
@@ -75,7 +75,7 @@ if __name__ == '__main__':
     features = h5py.File(feature_h5_path, 'r')[feature_h5_feats]
 
     # 载入预训练模型
-    banet = BANet(frame_size, projected_size, mid_size, hidden_size,
+    banet = BANet(feature_size, projected_size, mid_size, hidden_size,
                   max_frames, max_words, vocab)
     banet.load_state_dict(torch.load(best_banet_pth_path))
     banet.cuda()

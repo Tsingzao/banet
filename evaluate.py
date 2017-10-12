@@ -14,7 +14,7 @@ from data import get_eval_loader
 from model import BANet
 from args import vocab_pkl_path, feature_h5_path
 from args import banet_pth_path, best_banet_pth_path
-from args import frame_size, max_frames, max_words
+from args import feature_size, max_frames, max_words
 from args import projected_size, hidden_size, mid_size
 from args import test_range, test_prediction_txt_path, test_reference_txt_path
 from args import use_cuda
@@ -73,7 +73,7 @@ if __name__ == '__main__':
         vocab = pickle.load(f)
 
     # 载入预训练模型
-    decoder = BANet(frame_size, projected_size, mid_size, hidden_size,
+    decoder = BANet(feature_size, projected_size, mid_size, hidden_size,
                     max_frames, max_words, vocab)
     if len(sys.argv) > 1:
         decoder.load_state_dict(torch.load(best_banet_pth_path))

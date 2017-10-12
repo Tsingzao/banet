@@ -18,7 +18,7 @@ from evaluate import evaluate
 from args import vocab_pkl_path, train_caption_pkl_path, feature_h5_path
 from args import num_epochs, batch_size, learning_rate, ss_factor
 from args import projected_size, hidden_size, mid_size
-from args import frame_size, max_frames, max_words
+from args import feature_size, max_frames, max_words
 from args import use_cuda, use_checkpoint
 from args import banet_pth_path, optimizer_pth_path
 from args import best_banet_pth_path, best_optimizer_pth_path
@@ -37,7 +37,7 @@ with open(vocab_pkl_path, 'rb') as f:
 vocab_size = len(vocab)
 
 # 构建模型
-banet = BANet(frame_size, projected_size, mid_size, hidden_size,
+banet = BANet(feature_size, projected_size, mid_size, hidden_size,
               max_frames, max_words, vocab)
 
 

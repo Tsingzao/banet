@@ -1,10 +1,13 @@
 # Introduction
-Partial implementation of [Hierarchical Boundary-Aware Neural Encoder for Video Captioning](https://arxiv.org/abs/1611.09312). The C3D part is not implemented.
+Partial implementation of [Hierarchical Boundary-Aware Neural Encoder for Video Captioning](https://arxiv.org/abs/1611.09312). The C3D part is implemented but not work well.
+
+**Difference from original paper**: In the original paper, the author sampled every 5 frames, while I sampled fix number of frames using *np.linspace*.
 
 # Requirements
 ## Pretrained Model
 - VGG16 pretrained on ImageNet [PyTorch version]: https://download.pytorch.org/models/vgg16-397923af.pth
 - ResNet50 pretrained on ImageNet [PyTorch version]: https://s3.amazonaws.com/pytorch/models/resnet50-19c8e357.pth
+- C3D pretrained on Sports1M [ported from Keras]: http://imagelab.ing.unimore.it/files/c3d_pytorch/c3d.pickle
 
 ## Datasets
 - MSVD: https://www.microsoft.com/en-us/download/details.aspx?id=52422
@@ -68,7 +71,18 @@ On MSVD: https://mega.nz/#!5pRQEaZC!zmCkfjtmqAIEMUgoT0_PFX9Ame-oNAO5SU0brIm_lqI
 
 On MSR-VTT: https://mega.nz/#!Q0RHXYLa!2svrqHyjXaMx59aMho4GujNCnLECHyaoWnkmjHWbwUo
     
-If you use the trained model, please make a directory named 'results', and then put the pretrained models into this directory.
+If you use the trained model, please make a directory named 'results', and then put the trained models into this directory.
+
+
+# Training Logs
+## MSVD
+![MSVD](./img/MSVD.png  "MSVD")
+## MSVD with C3D
+![MSVD with C3D](./img/MSVD-C3D.png  "MSVD-C3D")
+## MSR-VTT
+![MSR-VTT](./img/MSR-VTT.png  "MSR-VTT")
+
+**Note**: The raising of loss is because of [schedule sampling](https://arxiv.org/abs/1506.03099).
         
 # Results
 ## Quantity
@@ -77,4 +91,5 @@ The following table shows the performance of this implementation (using ResNet50
 | Dataset             |       B1 |       B2 |      B3 |       B4 |       M |       Cr |
 | :------             | :------: | :------: | ------: | :------: | ------: | :------: |
 | MSVD                |     79.8 |     65.5 |    55.1 |     44.8 |    31.6 |     69.4 |
+| MSVD (+C3D)         |     79.1 |     65.4 |    54.4 |     43.2 |    30.2 |     61.6 |
 | MSR-VTT             |     78.7 |     63.2 |    49.2 |     36.8 |    26.7 |     41.2 |

@@ -4,6 +4,7 @@ datasets
 datasets/
 feats
 feats/
+feats_old/
 feats_bak/
 results/
 visuals/

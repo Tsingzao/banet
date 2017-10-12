@@ -26,7 +26,9 @@ hidden_size = 1024  # 循环网络的隐层单元数目
 mid_size = 128  # 边界检测层的中间表示维度
 
 frame_shape = (3, 224, 224)  # 视频帧的形状
-frame_size = 2048  # 视频特征的维度
+a_feature_size = 2048  # 表观特征的大小
+m_feature_size = 4096  # 运动特征的大小
+feature_size = a_feature_size + m_feature_size  # 最终特征大小
 frame_sample_rate = 10  # 视频帧的采样率
 max_frames = 20  # 图像序列的最大长度
 max_words = 30  # 文本序列的最大长度
@@ -60,8 +62,8 @@ dataset = {
 
 # 用video_root和anno_json_path这两个变量来切换所使用的数据集
 # video_sort_lambda用来对视频按照名称进行排序
-# ds = 'msvd'
-ds = 'msr-vtt'
+ds = 'msvd'
+# ds = 'msr-vtt'
 video_root, video_sort_lambda, anno_json_path, \
     train_range, val_range, test_range = dataset[ds]
 
@@ -96,6 +98,7 @@ test_prediction_txt_path = os.path.join(result_dir, ds + '_test_predictions.txt'
 # checkpoint相关的超参数
 resnet_checkpoint = './models/resnet50-19c8e357.pth'  # 直接用pytorch训练的模型
 vgg_checkpoint = './models/vgg16-00b39a1b.pth'  # 从caffe转换而来
+c3d_checkpoint = './models/c3d.pickle'
 
 banet_pth_path = os.path.join(result_dir, ds + '_banet.pth')
 best_banet_pth_path = os.path.join(result_dir, ds + '_best_banet.pth')
